@@ -8,8 +8,8 @@ import Notice from "./pages/Notice";
 import "./App.css";
 
 function App() {
-  const [code, setCode] = useState("TITV");
-  const [id, setId] = useState("55444");
+  const [code, setCode] = useState("1");
+  const [id, setId] = useState("55088");
   return (
     <BrowserRouter>
       <Header />

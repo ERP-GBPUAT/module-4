@@ -10,9 +10,9 @@ const Advisee = ({ code, id }) => {
     const getAdvisorDetails = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/faculty/${code}`
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${code}`
         );
-        setAdvisor(data);
+        setAdvisor(data.data);
       } catch (err) {
         console.log(err);
       }
@@ -20,9 +20,9 @@ const Advisee = ({ code, id }) => {
     const getAdvisees = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees?faculty_code=${code}`
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees/${code}`
         );
-        setAdvisees(data);
+        setAdvisees(data.data);
       } catch (err) {
         console.log(err);
       }
@@ -50,8 +50,8 @@ const Advisee = ({ code, id }) => {
             <div>{advisor.User?.name}</div>
             <div>{code}</div>
             <div>{advisor.User?.phoneNo}</div>
-            <div>{advisor.User?.designation}</div>
-            <div>{advisor.User?.qualification}</div>
+            <div>{advisor.designation}</div>
+            <div>{advisor.qualification}</div>
           </div>
         </div>
       </div>

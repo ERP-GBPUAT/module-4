@@ -5,16 +5,18 @@ import axios from "axios";
 const Advisor = ({ code }) => {
   const navigate = useNavigate();
   const [year, setYear] = useState(0);
+  const [adviseesAPI, setAdviseesAPI] = useState([]);
   const [advisees, setAdvisees] = useState([]);
   const [advisorName, setAdvisorName] = useState("");
   useEffect(() => {
     const getAdvisees = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees?faculty_code=${code}`
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees/${code}`
         );
-        setAdvisees(data);
-        setAdvisorName(data[0].advisor_name);
+        setAdviseesAPI(data.data);
+        setAdvisees(data.data);
+        setAdvisorName(data.data[0].advisor_name);
       } catch (err) {
         console.log(err);
       }
@@ -23,9 +25,11 @@ const Advisor = ({ code }) => {
   }, []);
 
   useEffect(() => {
-    setAdvisees(
-      advisees.filter((a) => a.batch === new Date().getFullYear() - year)
-    );
+    if (year === 0) setAdvisees(adviseesAPI);
+    else
+      setAdvisees(
+        adviseesAPI.filter((a) => a.batch === new Date().getFullYear() - year)
+      );
   }, [year]);
 
   return (
@@ -38,7 +42,7 @@ const Advisor = ({ code }) => {
           </h1>
           <button
             className="btn-secondary"
-            onClick={() => navigate("advisor/notice")}
+            onClick={() => navigate("/advisor/notice")}
           >
             Send Notice
           </button>
@@ -85,9 +89,7 @@ const Advisor = ({ code }) => {
               <td className="border px-4 py-2 text-center">
                 {advisee.studentId}
               </td>
-              <td className="border px-4 py-2 text-center">
-                {advisee.batch}
-              </td>
+              <td className="border px-4 py-2 text-center">{advisee.batch}</td>
               <td className="border px-4 py-2 text-center">
                 {advisee.User?.phoneNo}
               </td>
