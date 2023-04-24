@@ -7,7 +7,7 @@ const Advisor = ({ code }) => {
   const [year, setYear] = useState(0);
   const [adviseesAPI, setAdviseesAPI] = useState([]);
   const [advisees, setAdvisees] = useState([]);
-  const [advisorName, setAdvisorName] = useState("");
+  const [advisor, setAdvisor] = useState({});
   useEffect(() => {
     const getAdvisees = async () => {
       try {
@@ -16,12 +16,22 @@ const Advisor = ({ code }) => {
         );
         setAdviseesAPI(data.data);
         setAdvisees(data.data);
-        setAdvisorName(data.data[0].advisor_name);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getAdvisorDetails = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${code}`
+        );
+        setAdvisor(data.data);
       } catch (err) {
         console.log(err);
       }
     };
     getAdvisees();
+    getAdvisorDetails();
   }, []);
 
   useEffect(() => {
@@ -37,8 +47,7 @@ const Advisor = ({ code }) => {
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">
-            Advisees of{" "}
-            {advisorName ? advisorName : "Mr. Vivek Vishwakarma Verma"}
+            Advisees of {advisor.User?.name}
           </h1>
           <button
             className="btn-secondary"
@@ -48,7 +57,7 @@ const Advisor = ({ code }) => {
           </button>
         </div>
         <div className="">
-          Assistant Professor, Department of Information Technology
+          {advisor.designation}, Department of Information Technology
         </div>
       </div>
       <h4 className="text-lg">Select year to filter</h4>

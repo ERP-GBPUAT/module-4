@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { HiUserCircle } from "react-icons/hi";
 
-const Advisee = ({ code, id }) => {
+const Advisee = ({ code }) => {
   const [advisor, setAdvisor] = useState({});
   const [advisees, setAdvisees] = useState([]);
 
@@ -38,7 +38,7 @@ const Advisee = ({ code, id }) => {
         <div className="advisor-img">
           <HiUserCircle />
         </div>
-        <div className="bg-white p-4 rounded-md flex items-center w-full">
+        <div className="bg-white p-4 rounded-md flex w-full">
           <div className="w-28">
             <div className="font-bold">Name:</div>
             <div className="font-bold">Advisor Code:</div>
@@ -48,7 +48,7 @@ const Advisee = ({ code, id }) => {
           </div>
           <div>
             <div>{advisor.User?.name}</div>
-            <div>{code}</div>
+            <div>{advisor.facultyId}</div>
             <div>{advisor.User?.phoneNo}</div>
             <div>{advisor.designation}</div>
             <div>{advisor.qualification}</div>
