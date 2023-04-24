@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Home = ({ setPage, code, setCode, id, setId }) => {
+const Home = ({ code, setCode, id, setId }) => {
+  const navigate = useNavigate();
   const [modal, setModal] = useState(false);
 
   return (
@@ -19,7 +21,7 @@ const Home = ({ setPage, code, setCode, id, setId }) => {
               />
             </div>
             <div className="card-body">
-              <div className="card-title" onClick={() => setPage("advisor")}>
+              <div className="card-title" onClick={() => navigate("/advisor")}>
                 {code ? `Advisor Code - ${code}` : "Enter as Advisor"}
               </div>
               <div className="card-subtitle">
@@ -39,7 +41,7 @@ const Home = ({ setPage, code, setCode, id, setId }) => {
               />
             </div>
             <div className="card-body">
-              <div className="card-title" onClick={() => setPage("advisee")}>
+              <div className="card-title" onClick={() => navigate("/advisee")}>
                 {id ? `Advisee Code - ${id}` : "Enter as Advisee"}
               </div>
               <div className="card-subtitle">

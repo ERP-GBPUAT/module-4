@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { HiUserCircle } from "react-icons/hi";
 import { RxDotsVertical } from "react-icons/rx";
 
-const Header = ({ setPage }) => {
+const Header = () => {
+  const navigate = useNavigate();
   const [language, setLanguage] = useState("en");
   return (
     <div className="header flex justify-between items-center px-6 bg-white">
       <div
         className="flex items-center py-2 cursor-pointer"
-        onClick={() => setPage("home")}
+        onClick={() => navigate("/")}
       >
         <img src="./logo.webp" alt="logo" className="w-10 h-10 mr-4" />
         <h1 className="text-xl font-medium">ERP Systems</h1>

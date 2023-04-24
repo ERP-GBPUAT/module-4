@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Advisor = ({ code, setPage }) => {
+const Advisor = ({ code }) => {
+  const navigate = useNavigate();
   const [year, setYear] = useState(0);
   const [advisees, setAdvisees] = useState([]);
   const [advisorName, setAdvisorName] = useState("");
@@ -25,9 +27,10 @@ const Advisor = ({ code, setPage }) => {
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">
-            Advisees of {advisorName ? advisorName : "Mr. Vivek Vishwakarma Verma"}
+            Advisees of{" "}
+            {advisorName ? advisorName : "Mr. Vivek Vishwakarma Verma"}
           </h1>
-          <button className="btn-secondary" onClick={() => setPage("notice")}>
+          <button className="btn-secondary" onClick={() => navigate("/notice")}>
             Send Notice
           </button>
         </div>
