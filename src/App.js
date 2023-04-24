@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Home from "./pages/Home";
+import Advisor from "./pages/Advisor";
+import Advisee from "./pages/Advisee";
+import "./App.css";
+import Notice from "./pages/Notice";
+import Header from "./components/Header";
 
 function App() {
+  const [page, setPage] = useState("home");
+  const [code, setCode] = useState("TITV");
+  const [id, setId] = useState("55444");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header setPage={setPage} />
+      <div className="page-template">
+        {page === "home" && (
+          <Home
+            setPage={setPage}
+            code={code}
+            setCode={setCode}
+            id={id}
+            setId={setId}
+          />
+        )}
+        {page === "advisor" && <Advisor code={code} setPage={setPage} />}
+        {page === "advisee" && <Advisee id={id} code={code} />}
+        {page === "notice" && <Notice code={code} />}
+      </div>
+    </>
   );
 }
 

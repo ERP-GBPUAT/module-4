@@ -1,13 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap');
+
+/* define constants */
+:root {
+  --primary-color: #808dbb;
+  --secondary-color: #c9d2d3;
+  --tertiary-color: #f2f4f7;
+  --green-color: #37a794;
+  --red-color: #e74c3c;
+  --light-color: #f1f3f4;
+  --dark-color: #464646;
+}
+.bg-primary {
+  background-color: var(--primary-color);
+}
+.bg-theme-green {
+  background-color: var(--green-color);
+}
+.bg-aliceblue {
+  background-color: aliceblue;
+}
+.bg-light {
+  background-color: var(--light-color);
+}
+.bg-dark {
+  background-color: var(--dark-color);
+}
+* {
+  font-family: 'Roboto', sans-serif;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 14px;
+  background-color: var(--light-color);
 }
