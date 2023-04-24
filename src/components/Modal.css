@@ -1,0 +1,22 @@
+.modal {
+  z-index: 101;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 0.4rem;
+  min-width: 45vw;
+}
+.modal-backdrop {
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.modal-header {
+  border-bottom: solid 0.1rem rgba(0, 0, 0, 0.1);
+}
