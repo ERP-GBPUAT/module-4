@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const Home = ({ code, setCode, id, setId }) => {
   const navigate = useNavigate();
-  const [modal, setModal] = useState(false);
 
   return (
     <div className="px-8 home">

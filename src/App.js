@@ -22,8 +22,8 @@ function App() {
             }
           />
           <Route path="/advisor" element={<Advisor code={code} />} />
+          <Route path="/advisor/notice" element={<Notice code={code} />} />
           <Route path="/advisee" element={<Advisee id={id} code={code} />} />
-          <Route path="/notice" element={<Notice code={code} />} />
         </Routes>
       </div>
     </BrowserRouter>

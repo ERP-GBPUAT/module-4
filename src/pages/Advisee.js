@@ -10,7 +10,7 @@ const Advisee = ({ code, id }) => {
     const getAdvisorDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/advisor/${code}`
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/${code}`
         );
         setAdvisor(data);
       } catch (err) {
@@ -20,7 +20,7 @@ const Advisee = ({ code, id }) => {
     const getAdvisees = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/advisor/${code}/list_of_advisees`
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees?faculty_code=${code}`
         );
         setAdvisees(data);
       } catch (err) {
@@ -47,11 +47,11 @@ const Advisee = ({ code, id }) => {
             <div className="font-bold">Qualification:</div>
           </div>
           <div>
-            <div>XYZ</div>
+            <div>{advisor.User?.name}</div>
             <div>{code}</div>
-            <div>+9176576547</div>
-            <div>Prof</div>
-            <div>Ph.D</div>
+            <div>{advisor.User?.phoneNo}</div>
+            <div>{advisor.User?.designation}</div>
+            <div>{advisor.User?.qualification}</div>
           </div>
         </div>
       </div>
@@ -66,30 +66,20 @@ const Advisee = ({ code, id }) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          <tr>
-            <td className="border px-4 py-2 text-center">1</td>
-            <td className="border px-4 py-2 text-center">Adam</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">+9178687586</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">2</td>
-            <td className="border px-4 py-2 text-center">Alice</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">+9178687586</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">3</td>
-            <td className="border px-4 py-2 text-center">Mango</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">+9178687586</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">Ramesh</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">+9178687586</td>
-          </tr>
+          {advisees.map((student, index) => (
+            <tr>
+              <td className="border px-4 py-2 text-center">{index + 1}</td>
+              <td className="border px-4 py-2 text-center">
+                {student.User?.name}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {student.studentId}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {student.User?.phoneNo}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

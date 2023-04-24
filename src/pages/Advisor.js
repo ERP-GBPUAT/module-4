@@ -11,7 +11,7 @@ const Advisor = ({ code }) => {
     const getAdvisees = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/advisor/${code}/list_of_advisees`
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees?faculty_code=${code}`
         );
         setAdvisees(data);
         setAdvisorName(data[0].advisor_name);
@@ -22,6 +22,12 @@ const Advisor = ({ code }) => {
     getAdvisees();
   }, []);
 
+  useEffect(() => {
+    setAdvisees(
+      advisees.filter((a) => a.batch === new Date().getFullYear() - year)
+    );
+  }, [year]);
+
   return (
     <div className="p-8 advisor">
       <div className="mb-8">
@@ -30,7 +36,10 @@ const Advisor = ({ code }) => {
             Advisees of{" "}
             {advisorName ? advisorName : "Mr. Vivek Vishwakarma Verma"}
           </h1>
-          <button className="btn-secondary" onClick={() => navigate("/notice")}>
+          <button
+            className="btn-secondary"
+            onClick={() => navigate("advisor/notice")}
+          >
             Send Notice
           </button>
         </div>
@@ -46,30 +55,14 @@ const Advisor = ({ code }) => {
         >
           All
         </button>
-        <button
-          className={`year-tab ${year === 1 && "active"}`}
-          onClick={() => setYear(1)}
-        >
-          1st year
-        </button>
-        <button
-          className={`year-tab ${year === 2 && "active"}`}
-          onClick={() => setYear(2)}
-        >
-          2nd year
-        </button>
-        <button
-          className={`year-tab ${year === 3 && "active"}`}
-          onClick={() => setYear(3)}
-        >
-          3rd year
-        </button>
-        <button
-          className={`year-tab ${year === 4 && "active"}`}
-          onClick={() => setYear(4)}
-        >
-          4th year
-        </button>
+        {[1, 2, 3, 4].map((item) => (
+          <button
+            className={`year-tab ${year === item && "active"}`}
+            onClick={() => setYear(item)}
+          >
+            {new Date().getFullYear() - item}
+          </button>
+        ))}
       </div>
       <table className="w-full">
         <thead className="">
@@ -77,44 +70,32 @@ const Advisor = ({ code }) => {
             <th className="border px-4 py-2">S.No.</th>
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">Year</th>
+            <th className="border px-4 py-2">Batch</th>
             <th className="border px-4 py-2">Contact No.</th>
             <th className="border px-4 py-2">Parent's No.</th>
           </tr>
         </thead>
         <tbody className="bg-white">
-          <tr>
-            <td className="border px-4 py-2 text-center">1</td>
-            <td className="border px-4 py-2 text-center">Adam</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">+9175758658</td>
-            <td className="border px-4 py-2 text-center">+91676567567</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">2</td>
-            <td className="border px-4 py-2 text-center">Alice</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">+9175758658</td>
-            <td className="border px-4 py-2 text-center">+91676567567</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">3</td>
-            <td className="border px-4 py-2 text-center">Mango</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">+9175758658</td>
-            <td className="border px-4 py-2 text-center">+91676567567</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">Django</td>
-            <td className="border px-4 py-2 text-center">TITDEPT</td>
-            <td className="border px-4 py-2 text-center">4</td>
-            <td className="border px-4 py-2 text-center">+9175758658</td>
-            <td className="border px-4 py-2 text-center">+91676567567</td>
-          </tr>
+          {advisees.map((advisee, index) => (
+            <tr>
+              <td className="border px-4 py-2 text-center">{index + 1}</td>
+              <td className="border px-4 py-2 text-center">
+                {advisee.User?.name}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {advisee.studentId}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {advisee.batch}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {advisee.User?.phoneNo}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {advisee.parentPhone}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

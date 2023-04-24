@@ -9,7 +9,7 @@ const Notice = ({ code }) => {
   const sendNotice = async () => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/advisor/${code}/send_notice`
+        `${process.env.REACT_APP_BACKEND_URL}/faculty/sendNotice?faculty_code=${code}`
       );
       alert("successfully sent");
     } catch (e) {
