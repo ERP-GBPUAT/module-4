@@ -1,45 +1,42 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 // import { redirect } from "react-router-dom";
 
-const Home = ({setAdvisorCode,advisorCode,studentId,setStudentId}) => {
+const Home = ({ setAdvisorCode, advisorCode, studentId, setStudentId }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState("");
   // const [isStudent, setIsStudent] = useState(false)
   // const [isFaculty, setIsFaculty] = useState(false)
   const [temp, setTemp] = useState("");
-  console.log('user',localStorage.getItem('data'))
-  
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem('data') || {})
-    user = user?.user
-    console.log('ssssssssss', user?.user)
-    const isStudent = user.isStudent || false
-    const isFaculty = user.isFaculty || false
-    let isHod = false
-    let faculty=0
-    console.log('isStudent',isStudent)
-    console.log('isFaculty',isFaculty)
-    if(isFaculty){
-      faculty = user?.faculty
-      isHod = faculty?.hodOfDepartment
-    }
-    if(isStudent){
-      navigate('/advisee')
-    }
-    else if(isFaculty){
-      setAdvisorCode(faculty?.id)
-      navigate('/advisor')
-    }
-    else if(isHod){
-      setAdvisorCode(faculty?.id)
-      navigate('/hodProtal')
-    }
+  // console.log('user',localStorage.getItem('data'))
 
-  }, [])
-  if(!localStorage.getItem('token'))return( <div>Please Login</div> )
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("data") || {});
+    // user = user?.user;
+    console.log("user", data?.user);
+    const isStudent = data.user.isStudent || false;
+    const isFaculty = data.user.isFaculty || false;
+    let isHod = false;
+    // console.log('isStudent',isStudent)
+    // console.log('isFaculty',isFaculty)
+    if (isFaculty) {
+      let faculty = data?.faculty;
+      isHod = faculty?.hodOfDepartment;
+      console.log(faculty.id)
+      setAdvisorCode(faculty.id);
+    }
+    if (isHod) navigate("/hodProtal");
+    else if (isFaculty) navigate("/advisor");
+    else if (isStudent) {
+      let student = data?.student;
+      console.log(student.FacultyId)
+      setAdvisorCode(student.FacultyId);
+      navigate("/advisee");
+    }
+  }, []);
+  if (!localStorage.getItem("token")) return <div>Please Login</div>;
   return (
     <>
       <div className="px-8 home">
@@ -61,7 +58,9 @@ const Home = ({setAdvisorCode,advisorCode,studentId,setStudentId}) => {
                   className="card-title"
                   onClick={() => navigate("/advisor")}
                 >
-                  {advisorCode ? `Advisor Code - ${advisorCode}` : "Enter as Advisor"}
+                  {advisorCode
+                    ? `Advisor Code - ${advisorCode}`
+                    : "Enter as Advisor"}
                 </div>
                 <div className="card-subtitle">
                   View your advisees and their details. Send official notices
@@ -89,7 +88,9 @@ const Home = ({setAdvisorCode,advisorCode,studentId,setStudentId}) => {
                   className="card-title"
                   onClick={() => navigate("/advisee")}
                 >
-                  {studentId ? `Advisee Code - ${studentId}` : "Enter as Advisee"}
+                  {studentId
+                    ? `Advisee Code - ${studentId}`
+                    : "Enter as Advisee"}
                 </div>
                 <div className="card-subtitle">
                   View your advisor and his/her details. View other advisees,

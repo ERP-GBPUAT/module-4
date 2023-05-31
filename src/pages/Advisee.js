@@ -9,20 +9,36 @@ const Advisee = ({ code }) => {
   useEffect(() => {
     const getAdvisorDetails = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${code}`
-        );
-        setAdvisor(data.data);
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty`
+        ,{
+          method:"GET",
+          headers:{
+            "Content-type":"application/json",
+            "token":localStorage.getItem("token")
+          }
+        });
+        const json = await res.json()
+        console.log(json)
+        setAdvisor(json.data);
       } catch (err) {
         console.log(err);
       }
     };
     const getAdvisees = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees/${code}`
-        );
-        setAdvisees(data.data);
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`
+        ,{
+          method:"GET",
+          headers:{
+            "Content-type":"application/json",
+            "token":localStorage.getItem("token")
+          }
+        });
+        const json = await res.json()
+        console.log(json)
+        setAdvisees(json.data);
       } catch (err) {
         console.log(err);
       }

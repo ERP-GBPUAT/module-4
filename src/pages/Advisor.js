@@ -17,9 +17,9 @@ const reducer = (state, action) => {
 
 const Advisor = ({advisorId} ) => {
   const navigate = useNavigate();
-  const[code, setCode] = useState('')
+  // const[code, setCode] = useState('')
   const [year, setYear] = useState(0);
-  const [adviseesAPI, setAdviseesAPI] = useState([]);
+  // const [adviseesAPI, setAdviseesAPI] = useState([]);
   // const [advisees, setAdvisees] = useState([]);
   // const [advisor, setAdvisor] = useState({});
   const [{ loading, error,advisee,advisor }, dispatch] = useReducer(reducer, {
@@ -29,10 +29,11 @@ const Advisor = ({advisorId} ) => {
     advisor:{}
   });
   // console.log('code', JSON.parse(localStorage.getItem('data')))
-  console.log('cccccccc',code)
+  // console.log('cccccccc',code)
   useEffect(() => {
     // const faculty = JSON.parse(localStorage.getItem('data')) || {}
     // setCode(faculty?.faculty?.id|| '')
+    console.log("advisorId", advisorId)
     const getAdvisees = async () => {
       dispatch({type:'FETCH_BEGIN'})
       try {
@@ -47,9 +48,8 @@ const Advisor = ({advisorId} ) => {
         });
         const json =  await res.json();
         if(json.msg==="success"){
-          console.log(json);
+          console.log(json.data);
           dispatch({type:'FETCH_SUCCESS',payload:json.data})
-          dispatch({type:'FETCH_AD_SUCCESS',payload:JSON.parse(localStorage.getItem('data'))})
         }
         else{
           dispatch({type:'FETCH_FAIL',payload:json.error})
@@ -64,10 +64,17 @@ const Advisor = ({advisorId} ) => {
       try {
         const res = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${advisorId}`
-        );
+        ,{
+          method:"GET",
+          headers:{
+            "Content-type":"application/json",
+            // "token":localStorage.getItem("token")
+          }
+        });
         const json = res.json();
-        if(json.msg){
-          dispatch({type:'FETCH_ADVISOR_SUCCESS',payload:json.data})
+        if(json.msg === "success"){
+          console.log(json.data);
+          dispatch({type:'FETCH_AD_SUCCESS',payload:json.data})
         }
         else{
           dispatch({type:'FETCH_FAIL',payload:json.error})
@@ -79,17 +86,10 @@ const Advisor = ({advisorId} ) => {
       }
     };
     getAdvisees();
-    // getAdvisorDetails();
+    getAdvisorDetails();
   }, []);
 
-  useEffect(() => {
-    // if (year === 0) setAdvisees(adviseesAPI);
-    // else
-    //   setAdvisees(
-    //     adviseesAPI.filter((a) => a.batch === new Date().getFullYear() - year)
-    //   );
-  }, [year]);
-  if(loading) return <div>Loading...</div> 
+  if(loading) return <div>Loading...</div>
   return (
     <div className="p-8 advisor">
       <div className="mb-8">

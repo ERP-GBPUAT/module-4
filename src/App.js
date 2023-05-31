@@ -12,11 +12,12 @@ function App() {
   useEffect(() => {
     const recMsg = (e) => {
       e.preventDefault();
-      if (
-        localStorage.getItem("token") &&
-        localStorage.getItem("token") != undefined
-      )
-        return;
+      // if (
+      //   localStorage.getItem("token") &&
+      //   localStorage.getItem("token") != undefined
+      // )
+      //   return;
+      console.log(e)
       console.log("data", e.data);
       if (!e.data.token) {
         return;
@@ -25,9 +26,9 @@ function App() {
       localStorage.setItem("data", e.data.user);
     };
     window.addEventListener("message", recMsg);
-    return () => {
-      window.removeEventListener("message", recMsg);
-    };
+    // return () => {
+    //   window.removeEventListener("message", recMsg);
+    // };
   }, []);
   console.log('user',localStorage.getItem('data'))
 
