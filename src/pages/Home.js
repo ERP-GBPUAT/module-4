@@ -11,10 +11,12 @@ const Home = () => {
 
     const isStudent = data.user.isStudent || false;
     const isFaculty = data.user.isFaculty || false;
-    const isHod = false;
-    if (isHod) navigate("/hodProtal");
+    const isHod =
+      data.faculty.hodOfDepartment || data.faculty.deanOfCollege || false;
+    if (isHod) navigate("/hodPortal");
     else if (isFaculty) navigate("/advisor");
     else if (isStudent) navigate("/advisee");
+    else navigate("/login");
   }, []);
 
   return <div>Loading...</div>;
