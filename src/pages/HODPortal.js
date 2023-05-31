@@ -52,7 +52,7 @@ const HODView = () => {
         console.log(err);
       }
     };
-    getAdvisees();
+    if (activeFacultyId) getAdvisees();
   }, [activeFacultyId]);
 
   if (loading) return <div>Loading...</div>;
@@ -82,7 +82,9 @@ const HODView = () => {
                   key={faculty.UserId}
                   onClick={() => setActiveFacultyId(faculty.id)}
                   className={
-                    activeFacultyId === faculty.id ? "active cursor-default" : "cursor-pointer"
+                    activeFacultyId === faculty.id
+                      ? "active cursor-default"
+                      : "cursor-pointer"
                   }
                 >
                   <td className="border px-4 py-2 text-center">{index + 1}</td>
@@ -109,7 +111,7 @@ const HODView = () => {
         <>
           <div className="text-lg mt-8 mb-2">
             Advisees of{" "}
-            {facultyList.find((f) => f.id === activeFacultyId).User.name}
+            {facultyList.find((f) => f.id === activeFacultyId).User.name} -
           </div>
           <table className="w-full">
             <thead>

@@ -65,6 +65,7 @@ const Advisee = () => {
             <div className="font-bold">Name:</div>
             <div className="font-bold">Advisor Code:</div>
             <div className="font-bold">Contact No.:</div>
+            <div className="font-bold">Email:</div>
             <div className="font-bold">Designation:</div>
             <div className="font-bold">Qualification:</div>
           </div>
@@ -72,6 +73,7 @@ const Advisee = () => {
             <div>{advisor.User?.name}</div>
             <div>{advisor.id}</div>
             <div>{advisor.User?.phoneNo}</div>
+            <div>{advisor.User?.email}</div>
             <div>{advisor.designation}</div>
             <div>{advisor.qualification}</div>
           </div>
