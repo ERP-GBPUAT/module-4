@@ -161,7 +161,12 @@ table tr:last-child td:last-child {
 }
 table tbody tr:hover {
   background-color: #f8f9fa;
-  cursor: pointer;
+}
+table tbody tr.active {
+  background-color: #c1e0ff;
+}
+table tbody tr.active:hover {
+  background-color: #afd7ff;
 }
 
 /* Advisee Page */
