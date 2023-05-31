@@ -6,6 +6,7 @@ import Advisor from "./pages/Advisor";
 import Advisee from "./pages/Advisee";
 import Notice from "./pages/Notice";
 import "./App.css";
+import HODPortal from "./pages/HODPortal";
 
 function App() {
   useEffect(() => {
@@ -30,8 +31,8 @@ function App() {
   }, []);
   console.log('user',localStorage.getItem('data'))
 
-  const [code, setCode] = useState();
-  const [id, setId] = useState("55088");
+  const [advisorCode, setAdvisorCode] = useState();
+  const [studentId, setStudentId] = useState();
   return (
     <BrowserRouter>
       <Header />
@@ -40,12 +41,13 @@ function App() {
           <Route
             path="/"
             element={
-              <Home code={code} setCode={setCode} id={id} setId={setId} />
+              <Home advisorCode={advisorCode} setAdvisorCode={setAdvisorCode} studentId={studentId} setStudentId={setStudentId} />
             }
           />
-          <Route path="/advisor" element={<Advisor code={code} />} />
-          <Route path="/advisor/notice" element={<Notice code={code} />} />
-          <Route path="/advisee" element={<Advisee id={id} code={code} />} />
+          <Route path="/advisor" element={<Advisor advisorCode={advisorCode} />} />
+          <Route path="/advisor/notice" element={<Notice advisorCode={advisorCode} />} />
+          <Route path="/advisee" element={<Advisee studentId={studentId} advisorCode={advisorCode} />} />
+          <Route path="/hodPortal" element={<HODPortal studentId={studentId} advisorCode={advisorCode} />} />
         </Routes>
       </div>
     </BrowserRouter>

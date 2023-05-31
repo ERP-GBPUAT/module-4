@@ -1,37 +1,80 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useReducer } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Advisor = ( ) => {
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_BEGIN":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, advisee: action.payload };
+    case "FETCH_AD_SUCCESS":
+      return { ...state, loading: false, advisor: action.payload };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+  }
+};
+
+const Advisor = ({advisorId} ) => {
   const navigate = useNavigate();
   const[code, setCode] = useState('')
   const [year, setYear] = useState(0);
   const [adviseesAPI, setAdviseesAPI] = useState([]);
-  const [advisees, setAdvisees] = useState([]);
-  const [advisor, setAdvisor] = useState({});
+  // const [advisees, setAdvisees] = useState([]);
+  // const [advisor, setAdvisor] = useState({});
+  const [{ loading, error,advisee,advisor }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+    advisee: [],
+    advisor:{}
+  });
   // console.log('code', JSON.parse(localStorage.getItem('data')))
   console.log('cccccccc',code)
   useEffect(() => {
-    const faculty = JSON.parse(localStorage.getItem('data')) || {}
-    setCode(faculty?.faculty?.id|| '')
+    // const faculty = JSON.parse(localStorage.getItem('data')) || {}
+    // setCode(faculty?.faculty?.id|| '')
     const getAdvisees = async () => {
+      dispatch({type:'FETCH_BEGIN'})
       try {
-        const { data } = await axios.get(
+        const res = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`
-        );
-        setAdviseesAPI(data.data);
-        setAdvisees(data.data);
+        ,{
+          method:"GET",
+          headers:{
+            "Content-type":"application/json",
+            "token":localStorage.getItem("token")
+          }
+        });
+        const json =  await res.json();
+        if(json.msg==="success"){
+          console.log(json);
+          dispatch({type:'FETCH_SUCCESS',payload:json.data})
+          dispatch({type:'FETCH_AD_SUCCESS',payload:JSON.parse(localStorage.getItem('data'))})
+        }
+        else{
+          dispatch({type:'FETCH_FAIL',payload:json.error})
+        }
+        // setAdviseesAPI(data.data);
       } catch (err) {
         console.log(err);
+        dispatch({type:'FETCH_FAIL',payload:error.message})
       }
     };
     const getAdvisorDetails = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${code}`
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${advisorId}`
         );
-        setAdvisor(data.data);
+        const json = res.json();
+        if(json.msg){
+          dispatch({type:'FETCH_ADVISOR_SUCCESS',payload:json.data})
+        }
+        else{
+          dispatch({type:'FETCH_FAIL',payload:json.error})
+        }
+        // setAdvisor(data.data);
       } catch (err) {
+        dispatch({type:'FETCH_FAIL',payload:error.message})
         console.log(err);
       }
     };
@@ -40,19 +83,19 @@ const Advisor = ( ) => {
   }, []);
 
   useEffect(() => {
-    if (year === 0) setAdvisees(adviseesAPI);
-    else
-      setAdvisees(
-        adviseesAPI.filter((a) => a.batch === new Date().getFullYear() - year)
-      );
+    // if (year === 0) setAdvisees(adviseesAPI);
+    // else
+    //   setAdvisees(
+    //     adviseesAPI.filter((a) => a.batch === new Date().getFullYear() - year)
+    //   );
   }, [year]);
-
+  if(loading) return <div>Loading...</div> 
   return (
     <div className="p-8 advisor">
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">
-            Advisees of {advisor.User?.name}
+            Advisees of {advisor?.user?.name}
           </h1>
           <button
             className="btn-secondary"
@@ -62,7 +105,7 @@ const Advisor = ( ) => {
           </button>
         </div>
         <div className="">
-          {advisor.designation}, Department of Information Technology
+          {advisor?.faculty?.designation}, Department of Information Technology
         </div>
       </div>
       <h4 className="text-lg">Select year to filter</h4>
@@ -94,21 +137,21 @@ const Advisor = ( ) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {advisees.map((advisee, index) => (
+          {advisee?.map((advise, index) => (
             <tr>
               <td className="border px-4 py-2 text-center">{index + 1}</td>
               <td className="border px-4 py-2 text-center">
-                {advisee.User?.name}
+                {advise?.Faculty?.name}
               </td>
               <td className="border px-4 py-2 text-center">
-                {advisee.studentId}
+                {advise?.id}
               </td>
-              <td className="border px-4 py-2 text-center">{advisee.batch}</td>
+              <td className="border px-4 py-2 text-center">{advise?.batch}</td>
               <td className="border px-4 py-2 text-center">
-                {advisee.User?.phoneNo}
+                {advise?.User?.phoneNo}
               </td>
               <td className="border px-4 py-2 text-center">
-                {advisee.parentPhone}
+                {advise?.parentPhone}
               </td>
             </tr>
           ))}

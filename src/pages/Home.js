@@ -2,13 +2,13 @@ import React,{useEffect} from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
-import { redirect } from "react-router-dom";
+// import { redirect } from "react-router-dom";
 
-const Home = ({ code, setCode, id, setId }) => {
+const Home = ({setAdvisorCode,advisorCode,studentId,setStudentId}) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState("");
-  const [isStudent, setIsStudent] = useState(false)
-  const [isFaculty, setIsFaculty] = useState(false)
+  // const [isStudent, setIsStudent] = useState(false)
+  // const [isFaculty, setIsFaculty] = useState(false)
   const [temp, setTemp] = useState("");
   console.log('user',localStorage.getItem('data'))
   
@@ -18,16 +18,28 @@ const Home = ({ code, setCode, id, setId }) => {
     console.log('ssssssssss', user?.user)
     const isStudent = user.isStudent || false
     const isFaculty = user.isFaculty || false
+    let isHod = false
+    let faculty=0
     console.log('isStudent',isStudent)
     console.log('isFaculty',isFaculty)
+    if(isFaculty){
+      faculty = user?.faculty
+      isHod = faculty?.hodOfDepartment
+    }
     if(isStudent){
       navigate('/advisee')
     }
     else if(isFaculty){
+      setAdvisorCode(faculty?.id)
       navigate('/advisor')
+    }
+    else if(isHod){
+      setAdvisorCode(faculty?.id)
+      navigate('/hodProtal')
     }
 
   }, [])
+  if(!localStorage.getItem('token'))return( <div>Please Login</div> )
   return (
     <>
       <div className="px-8 home">
@@ -49,7 +61,7 @@ const Home = ({ code, setCode, id, setId }) => {
                   className="card-title"
                   onClick={() => navigate("/advisor")}
                 >
-                  {code ? `Advisor Code - ${code}` : "Enter as Advisor"}
+                  {advisorCode ? `Advisor Code - ${advisorCode}` : "Enter as Advisor"}
                 </div>
                 <div className="card-subtitle">
                   View your advisees and their details. Send official notices
@@ -77,7 +89,7 @@ const Home = ({ code, setCode, id, setId }) => {
                   className="card-title"
                   onClick={() => navigate("/advisee")}
                 >
-                  {id ? `Advisee Code - ${id}` : "Enter as Advisee"}
+                  {studentId ? `Advisee Code - ${studentId}` : "Enter as Advisee"}
                 </div>
                 <div className="card-subtitle">
                   View your advisor and his/her details. View other advisees,
@@ -120,8 +132,8 @@ const Home = ({ code, setCode, id, setId }) => {
                 <button
                   className="btn btn-primary"
                   onClick={() => {
-                    if (showModal === "advisor") setCode(temp);
-                    else setId(temp);
+                    if (showModal === "advisor") setAdvisorCode(temp);
+                    else setStudentId(temp);
                     setShowModal("");
                   }}
                 >
