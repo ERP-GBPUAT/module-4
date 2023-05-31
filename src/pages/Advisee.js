@@ -2,51 +2,57 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { HiUserCircle } from "react-icons/hi";
 
-const Advisee = ({ code }) => {
+const Advisee = () => {
+  const advisee = JSON.parse(localStorage.getItem("data"));
+  const [loadingAdvisor, setLoadingAdvisor] = useState(true);
   const [advisor, setAdvisor] = useState({});
+  const [loadingAdvisees, setLoadingAdvisees] = useState(true);
   const [advisees, setAdvisees] = useState([]);
 
   useEffect(() => {
     const getAdvisorDetails = async () => {
+      setLoadingAdvisor(true);
       try {
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty`
-        ,{
-          method:"GET",
-          headers:{
-            "Content-type":"application/json",
-            "token":localStorage.getItem("token")
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getFaculty/${advisee.student.FacultyId}`,
+          {
+            headers: {
+              "Content-type": "application/json",
+              token: localStorage.getItem("token"),
+            },
           }
-        });
-        const json = await res.json()
-        console.log(json)
-        setAdvisor(json.data);
+        );
+        if (data.error) console.log(data.error);
+        else setAdvisor(data.data);
       } catch (err) {
         console.log(err);
       }
+      setLoadingAdvisor(false);
     };
     const getAdvisees = async () => {
+      setLoadingAdvisees(true);
       try {
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`
-        ,{
-          method:"GET",
-          headers:{
-            "Content-type":"application/json",
-            "token":localStorage.getItem("token")
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
+          {
+            headers: {
+              "Content-type": "application/json",
+              token: localStorage.getItem("token"),
+            },
           }
-        });
-        const json = await res.json()
-        console.log(json)
-        setAdvisees(json.data);
+        );
+        if (data.error) console.log(data.error);
+        else setAdvisees(data.data);
       } catch (err) {
         console.log(err);
       }
+      setLoadingAdvisees(false);
     };
-    getAdvisorDetails();
     getAdvisees();
-  }, []);
+    getAdvisorDetails();
+  }, [advisee.student.FacultyId]);
 
+  if (loadingAdvisor || loadingAdvisees) return <div>Loading...</div>;
   return (
     <div className="p-8 advisee">
       <h1 className="text-2xl font-bold mb-4">Advisor Details</h1>
@@ -64,7 +70,7 @@ const Advisee = ({ code }) => {
           </div>
           <div>
             <div>{advisor.User?.name}</div>
-            <div>{advisor.facultyId}</div>
+            <div>{advisor.id}</div>
             <div>{advisor.User?.phoneNo}</div>
             <div>{advisor.designation}</div>
             <div>{advisor.qualification}</div>
@@ -82,20 +88,19 @@ const Advisee = ({ code }) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {advisees.map((student, index) => (
-            <tr>
-              <td className="border px-4 py-2 text-center">{index + 1}</td>
-              <td className="border px-4 py-2 text-center">
-                {student.User?.name}
-              </td>
-              <td className="border px-4 py-2 text-center">
-                {student.studentId}
-              </td>
-              <td className="border px-4 py-2 text-center">
-                {student.User?.phoneNo}
-              </td>
-            </tr>
-          ))}
+          {advisees &&
+            advisees.map((student, index) => (
+              <tr key={student.UserId}>
+                <td className="border px-4 py-2 text-center">{index + 1}</td>
+                <td className="border px-4 py-2 text-center">
+                  {student.User.name}
+                </td>
+                <td className="border px-4 py-2 text-center">{student.id}</td>
+                <td className="border px-4 py-2 text-center">
+                  {student.User?.phoneNo}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

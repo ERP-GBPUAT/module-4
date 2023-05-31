@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Advisor from "./pages/Advisor";
@@ -9,16 +9,10 @@ import "./App.css";
 import HODPortal from "./pages/HODPortal";
 
 function App() {
+  // recieve token from iframe and store it in localstorage (login from module-0)
   useEffect(() => {
     const recMsg = (e) => {
       e.preventDefault();
-      // if (
-      //   localStorage.getItem("token") &&
-      //   localStorage.getItem("token") != undefined
-      // )
-      //   return;
-      console.log(e)
-      console.log("data", e.data);
       if (!e.data.token) {
         return;
       }
@@ -26,29 +20,18 @@ function App() {
       localStorage.setItem("data", e.data.user);
     };
     window.addEventListener("message", recMsg);
-    // return () => {
-    //   window.removeEventListener("message", recMsg);
-    // };
   }, []);
-  console.log('user',localStorage.getItem('data'))
 
-  const [advisorCode, setAdvisorCode] = useState();
-  const [studentId, setStudentId] = useState();
   return (
     <BrowserRouter>
       <Header />
       <div className="page-template">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Home advisorCode={advisorCode} setAdvisorCode={setAdvisorCode} studentId={studentId} setStudentId={setStudentId} />
-            }
-          />
-          <Route path="/advisor" element={<Advisor advisorCode={advisorCode} />} />
-          <Route path="/advisor/notice" element={<Notice advisorCode={advisorCode} />} />
-          <Route path="/advisee" element={<Advisee studentId={studentId} advisorCode={advisorCode} />} />
-          <Route path="/hodPortal" element={<HODPortal studentId={studentId} advisorCode={advisorCode} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/advisor" element={<Advisor />} />
+          <Route path="/advisor/notice" element={<Notice />} />
+          <Route path="/advisee" element={<Advisee />} />
+          <Route path="/hodPortal" element={<HODPortal />} />
         </Routes>
       </div>
     </BrowserRouter>
