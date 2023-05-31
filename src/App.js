@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -8,7 +8,29 @@ import Notice from "./pages/Notice";
 import "./App.css";
 
 function App() {
-  const [code, setCode] = useState("1");
+  useEffect(() => {
+    const recMsg = (e) => {
+      e.preventDefault();
+      if (
+        localStorage.getItem("token") &&
+        localStorage.getItem("token") != undefined
+      )
+        return;
+      console.log("data", e.data);
+      if (!e.data.token) {
+        return;
+      }
+      localStorage.setItem("token", e.data.token);
+      localStorage.setItem("data", e.data.user);
+    };
+    window.addEventListener("message", recMsg);
+    return () => {
+      window.removeEventListener("message", recMsg);
+    };
+  }, []);
+  console.log('user',localStorage.getItem('data'))
+
+  const [code, setCode] = useState();
   const [id, setId] = useState("55088");
   return (
     <BrowserRouter>

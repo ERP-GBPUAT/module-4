@@ -1,12 +1,33 @@
+import React,{useEffect} from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
+import { redirect } from "react-router-dom";
 
 const Home = ({ code, setCode, id, setId }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState("");
+  const [isStudent, setIsStudent] = useState(false)
+  const [isFaculty, setIsFaculty] = useState(false)
   const [temp, setTemp] = useState("");
+  console.log('user',localStorage.getItem('data'))
+  
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem('data') || {})
+    user = user?.user
+    console.log('ssssssssss', user?.user)
+    const isStudent = user.isStudent || false
+    const isFaculty = user.isFaculty || false
+    console.log('isStudent',isStudent)
+    console.log('isFaculty',isFaculty)
+    if(isStudent){
+      navigate('/advisee')
+    }
+    else if(isFaculty){
+      navigate('/advisor')
+    }
 
+  }, [])
   return (
     <>
       <div className="px-8 home">

@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Advisor = ({ code }) => {
+const Advisor = ( ) => {
   const navigate = useNavigate();
+  const[code, setCode] = useState('')
   const [year, setYear] = useState(0);
   const [adviseesAPI, setAdviseesAPI] = useState([]);
   const [advisees, setAdvisees] = useState([]);
   const [advisor, setAdvisor] = useState({});
+  // console.log('code', JSON.parse(localStorage.getItem('data')))
+  console.log('cccccccc',code)
   useEffect(() => {
+    const faculty = JSON.parse(localStorage.getItem('data')) || {}
+    setCode(faculty?.faculty?.id|| '')
     const getAdvisees = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees/${code}`
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`
         );
         setAdviseesAPI(data.data);
         setAdvisees(data.data);
@@ -31,7 +36,7 @@ const Advisor = ({ code }) => {
       }
     };
     getAdvisees();
-    getAdvisorDetails();
+    // getAdvisorDetails();
   }, []);
 
   useEffect(() => {
