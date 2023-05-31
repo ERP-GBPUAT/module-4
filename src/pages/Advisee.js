@@ -79,7 +79,7 @@ const Advisee = () => {
       </div>
       <h1 className="text-2xl font-bold my-4">Classmate Advisees</h1>
       <table className="w-full">
-        <thead className="">
+        <thead>
           <tr>
             <th className="border px-4 py-2">S.No.</th>
             <th className="border px-4 py-2">Name</th>

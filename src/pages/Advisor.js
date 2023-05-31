@@ -64,7 +64,7 @@ const Advisor = () => {
             Send Notice
           </button>
         </div>
-        <div className="">
+        <div>
           {advisor?.faculty?.designation}, Department of Information Technology
         </div>
       </div>
@@ -86,7 +86,7 @@ const Advisor = () => {
         ))}
       </div>
       <table className="w-full">
-        <thead className="">
+        <thead>
           <tr>
             <th className="border px-4 py-2">S.No.</th>
             <th className="border px-4 py-2">Name</th>
