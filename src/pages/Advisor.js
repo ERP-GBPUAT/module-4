@@ -117,6 +117,13 @@ const Advisor = () => {
                 </td>
               </tr>
             ))}
+          {advisees && advisees.length === 0 && (
+            <tr>
+              <td className="border px-4 py-2 text-center" colSpan="6">
+                No advisees found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

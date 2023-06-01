@@ -35,7 +35,7 @@ const Advisee = () => {
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
           {
-            facultyId: advisee.student.FacultyId
+            facultyId: advisee.student.FacultyId,
           },
           {
             headers: {
@@ -106,6 +106,13 @@ const Advisee = () => {
                 </td>
               </tr>
             ))}
+          {advisees && advisees.length === 0 && (
+            <tr>
+              <td className="border px-4 py-2 text-center" colSpan="4">
+                No Advisees
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
