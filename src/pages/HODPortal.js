@@ -15,7 +15,7 @@ const HODView = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/faculty/getAllFaculty`,
+          `${process.env.REACT_APP_BACKEND_URL}/faculty/getDeptFaculty`,
           {
             headers: {
               "Content-type": "application/json",
@@ -40,7 +40,7 @@ const HODView = () => {
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
           {
-            facultyId: activeFacultyId
+            facultyId: activeFacultyId,
           },
           {
             headers: {
@@ -78,36 +78,34 @@ const HODView = () => {
         </thead>
         <tbody className="bg-white">
           {facultyList &&
-            facultyList
-              .filter((f) => !f.hodOfDepartment)
-              .map((faculty, index) => (
-                <tr
-                  key={faculty.UserId}
-                  onClick={() => setActiveFacultyId(faculty.id)}
-                  className={
-                    activeFacultyId === faculty.id
-                      ? "active cursor-default"
-                      : "cursor-pointer"
-                  }
-                >
-                  <td className="border px-4 py-2 text-center">{index + 1}</td>
-                  <td className="border px-4 py-2 text-center">
-                    {faculty?.User?.name || faculty.id}
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    {faculty.designation}
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    {faculty.qualification}
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    {faculty?.User?.phoneNo}
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    {faculty?.User?.email}
-                  </td>
-                </tr>
-              ))}
+            facultyList.map((faculty, index) => (
+              <tr
+                key={faculty.UserId}
+                onClick={() => setActiveFacultyId(faculty.id)}
+                className={
+                  activeFacultyId === faculty.id
+                    ? "active cursor-default"
+                    : "cursor-pointer"
+                }
+              >
+                <td className="border px-4 py-2 text-center">{index + 1}</td>
+                <td className="border px-4 py-2 text-center">
+                  {faculty?.User?.name || faculty.id}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {faculty.designation}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {faculty.qualification}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {faculty?.User?.phoneNo}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {faculty?.User?.email}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {activeFacultyId ? (
