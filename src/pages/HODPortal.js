@@ -72,14 +72,16 @@ const HODView = () => {
         >
           View faculties
         </button>
-        {advisor.faculty.isAdvisor && (
-          <button
-            className={`year-tab ${tab === 1 && "active"}`}
-            onClick={() => setTab(1)}
-          >
-            View advisees
-          </button>
-        )}
+        <button
+          className={`year-tab ${tab === 1 && "active"}
+            ${!advisor.faculty.isAdvisor && "opacity-50 cursor-not-allowed"}
+            `}
+          onClick={() => {
+            if (advisor.faculty.isAdvisor) setTab(1);
+          }}
+        >
+          View advisees
+        </button>
       </div>
       {tab === 0 ? (
         <>
