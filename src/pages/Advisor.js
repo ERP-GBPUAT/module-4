@@ -15,8 +15,9 @@ const Advisor = () => {
     const getAdvisees = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
+        const { data } = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
+          {},
           {
             headers: {
               "Content-type": "application/json",

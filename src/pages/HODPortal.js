@@ -37,8 +37,11 @@ const HODView = () => {
   useEffect(() => {
     const getAdvisees = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/student/getAdviseesByCode/${activeFacultyId}`,
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
+          {
+            facultyId: activeFacultyId
+          },
           {
             headers: {
               "Content-type": "application/json",

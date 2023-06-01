@@ -32,8 +32,11 @@ const Advisee = () => {
     const getAdvisees = async () => {
       setLoadingAdvisees(true);
       try {
-        const { data } = await axios.get(
+        const { data } = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/student/getAdvisees`,
+          {
+            facultyId: advisee.student.FacultyId
+          },
           {
             headers: {
               "Content-type": "application/json",
