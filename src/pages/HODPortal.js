@@ -57,13 +57,14 @@ const HODView = () => {
   }, [activeFacultyId]);
 
   const [tab, setTab] = useState(0);
+  console.log(advisor)
 
   if (loading) return <div>Loading...</div>;
   return (
     <div className="p-8 advisor">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">{advisor?.user?.name}</h1>
-        <div>Head of Department of Information Technology</div>
+        <div>Head of Department, {advisor?.faculty?.department}</div>
       </div>
       <div className="flex mt-3 mb-5">
         <button

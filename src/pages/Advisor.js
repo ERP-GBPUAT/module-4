@@ -66,7 +66,7 @@ const Advisor = () => {
           </button>
         </div>
         <div>
-          {advisor?.faculty?.designation}, Department of Information Technology
+          {advisor?.faculty?.designation}, Department of {advisor?.faculty?.department}
         </div>
       </div>
       <h4 className="text-lg">Select year to filter</h4>
